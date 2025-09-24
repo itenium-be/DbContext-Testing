@@ -83,6 +83,10 @@ public class CaseSensitivity
         Assert.That(exactMatch.Count(), Is.EqualTo(0));
     }
 
+    /// <summary>
+    /// Searching for "react" didn't find "React" in any of the
+    /// previous tests... But it does for SQL Server...
+    /// </summary>
     [Test]
     public async Task SqlServerTestContainer()
     {

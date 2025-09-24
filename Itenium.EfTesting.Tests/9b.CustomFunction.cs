@@ -12,6 +12,9 @@ public class CustomFunction
         public DbSet<ProductEntity> Products { get; init; }
     }
 
+    /// <summary>
+    /// EF.Functions.DataLength is implemented for SQLServer but not for SQLite
+    /// </summary>
     [Test]
     public async Task SqliteDatabase()
     {
