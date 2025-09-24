@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itenium.EfTesting.Tests", "Itenium.EfTesting.Tests\Itenium.EfTesting.Tests.csproj", "{F957BAAD-C1EB-A1BF-E447-56B12B8E4A6E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itenium.EfTesting.Context", "Itenium.EfTesting.Context\Itenium.EfTesting.Context.csproj", "{4CA6D439-DAD0-4A5C-A54B-94DACDA7840F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F957BAAD-C1EB-A1BF-E447-56B12B8E4A6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F957BAAD-C1EB-A1BF-E447-56B12B8E4A6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F957BAAD-C1EB-A1BF-E447-56B12B8E4A6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F957BAAD-C1EB-A1BF-E447-56B12B8E4A6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CA6D439-DAD0-4A5C-A54B-94DACDA7840F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CA6D439-DAD0-4A5C-A54B-94DACDA7840F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CA6D439-DAD0-4A5C-A54B-94DACDA7840F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CA6D439-DAD0-4A5C-A54B-94DACDA7840F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {426AC09B-2DB0-4DE9-95A9-2EFEBFCAC31E}
+	EndGlobalSection
+EndGlobal
