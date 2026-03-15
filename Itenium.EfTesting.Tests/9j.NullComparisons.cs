@@ -96,4 +96,50 @@ public class NullComparisons
         var notJames = await context.People.Where(p => p.MiddleName != "James").ToArrayAsync();
         Assert.That(notJames.Length, Is.EqualTo(2));
     }
+
+    [Test]
+    public async Task SqliteDatabase_RelationalNulls_ExcludesNull()
+    {
+        await using var connection = new SqliteConnection("Data Source=:memory:");
+        await connection.OpenAsync();
+
+        var options = new DbContextOptionsBuilder<StoreDbContext>()
+            .UseSqlite(connection, o => o.UseRelationalNulls())
+            .Options;
+
+        await using var context = new StoreDbContext(options);
+        await context.Database.EnsureCreatedAsync();
+
+        await context.People.AddAsync(new PersonEntity { Id = 1, Name = "Alice", MiddleName = null });
+        await context.People.AddAsync(new PersonEntity { Id = 2, Name = "Bob", MiddleName = "James" });
+        await context.People.AddAsync(new PersonEntity { Id = 3, Name = "Carol", MiddleName = "Anne" });
+        await context.SaveChangesAsync();
+
+        var notJames = await context.People.Where(p => p.MiddleName != "James").ToArrayAsync();
+        Assert.That(notJames.Length, Is.EqualTo(1));
+    }
+
+    [Test]
+    public async Task SqlServerTestContainer_RelationalNulls_ExcludesNull()
+    {
+        await using var container = new MsSqlBuilder()
+            .WithPassword("YourStrong@Passw0rd")
+            .Build();
+        await container.StartAsync();
+
+        var options = new DbContextOptionsBuilder<StoreDbContext>()
+            .UseSqlServer(container.GetConnectionString(), o => o.UseRelationalNulls())
+            .Options;
+
+        await using var context = new StoreDbContext(options);
+        await context.Database.EnsureCreatedAsync();
+
+        await context.People.AddAsync(new PersonEntity { Name = "Alice", MiddleName = null });
+        await context.People.AddAsync(new PersonEntity { Name = "Bob", MiddleName = "James" });
+        await context.People.AddAsync(new PersonEntity { Name = "Carol", MiddleName = "Anne" });
+        await context.SaveChangesAsync();
+
+        var notJames = await context.People.Where(p => p.MiddleName != "James").ToArrayAsync();
+        Assert.That(notJames.Length, Is.EqualTo(1));
+    }
 }
