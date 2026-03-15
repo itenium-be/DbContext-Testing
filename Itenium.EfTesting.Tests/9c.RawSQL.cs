@@ -31,11 +31,10 @@ public class RawSql
 
         await using var context = new StoreDbContext(options);
 
-        await context.Products.AddAsync(new ProductEntity() { Name = "React", Stock = 50 });
-        await context.Products.AddAsync(new ProductEntity() { Name = "Vue", Stock = 3 });
-        await context.SaveChangesAsync();
+        var ex = Assert.ThrowsAsync<InvalidOperationException>(
+            async () => await context.GetOverstock());
 
-        await context.GetOverstock();
+        Assert.That(ex.Message, Does.Contain("FromSqlQueryRootExpression"));
     }
 
     [Test]
