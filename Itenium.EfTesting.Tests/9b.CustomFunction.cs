@@ -32,11 +32,12 @@ public class CustomFunction
         await context.Products.AddAsync(new ProductEntity() { Name = "Angular" });
         await context.SaveChangesAsync();
 
-        var lotsOfBytes = await context.Products
-            .Where(p => EF.Functions.DataLength(p.Name) > "React".Length * 2)
-            .ToArrayAsync();
+        var ex = Assert.ThrowsAsync<InvalidOperationException>(async () =>
+            await context.Products
+                .Where(p => EF.Functions.DataLength(p.Name) > "React".Length * 2)
+                .ToArrayAsync());
 
-        Assert.That(lotsOfBytes.Length, Is.EqualTo(1));
+        Assert.That(ex.Message, Does.Contain("SqlServerDbFunctionsExtensions.DataLength"));
     }
 
     [Test]
