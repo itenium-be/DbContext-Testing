@@ -6,6 +6,11 @@ using Testcontainers.MsSql;
 
 namespace Itenium.EfTesting.Tests;
 
+/// <summary>
+/// Demonstrates decimal precision differences between providers.
+/// In-memory/SQLite: Preserve full .NET decimal precision
+/// SQL Server: Enforces configured column precision (decimal(18,6) truncates to 6 decimals)
+/// </summary>
 public class DecimalPrecision
 {
     public class PriceEntity
@@ -21,10 +26,12 @@ public class DecimalPrecision
         public DbSet<PriceEntity> Prices { get; init; }
     }
 
-    private const decimal PreciseDecimal = 123456.123456m;
+    // 8 decimal places, but column is decimal(18,6) - SQL Server truncates to 6
+    private const decimal PreciseDecimal = 123456.12345678m;
+    private const decimal TruncatedDecimal = 123456.123457m; // Rounded to 6 decimal places
 
     [Test]
-    public async Task InMemoryMockDbSet_ExactDecimalPrecision()
+    public async Task InMemoryMockDbSet_PreservesFullPrecision()
     {
         var prices = new[]
         {
@@ -32,28 +39,31 @@ public class DecimalPrecision
         }.BuildMockDbSet();
 
         var price = await prices.FirstAsync();
+
         Assert.That(price.Amount, Is.EqualTo(PreciseDecimal));
     }
 
     [Test]
-    public async Task InMemoryDatabase_ExactDecimalPrecision()
+    public async Task InMemoryDatabase_PreservesFullPrecision()
     {
         var options = new DbContextOptionsBuilder<StoreDbContext>()
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
 
         await using var context = new StoreDbContext(options);
-
         await context.Prices.AddAsync(new PriceEntity { Id = 1, Amount = PreciseDecimal });
         await context.SaveChangesAsync();
 
+        context.ChangeTracker.Clear();
         var price = await context.Prices.FirstAsync();
+
         Assert.That(price.Amount, Is.EqualTo(PreciseDecimal));
     }
 
     [Test]
-    public async Task SqliteDatabase_LosesDecimalPrecision()
+    public async Task SqliteDatabase_PreservesFullPrecision()
     {
+        // SQLite stores decimals as TEXT, preserving full precision
         await using var connection = new SqliteConnection("Data Source=:memory:");
         await connection.OpenAsync();
 
@@ -70,11 +80,12 @@ public class DecimalPrecision
         context.ChangeTracker.Clear();
         var price = await context.Prices.FirstAsync();
 
-        Assert.That(price.Amount, Is.EqualTo(PreciseDecimal).Within(0.000001m));
+        // SQLite preserves precision - same as in-memory!
+        Assert.That(price.Amount, Is.EqualTo(PreciseDecimal));
     }
 
     [Test]
-    public async Task SqlServerTestContainer_ConfigurablePrecision()
+    public async Task SqlServerTestContainer_TruncatesToColumnPrecision()
     {
         await using var container = new MsSqlBuilder()
             .WithPassword("YourStrong@Passw0rd")
@@ -94,6 +105,8 @@ public class DecimalPrecision
         context.ChangeTracker.Clear();
         var price = await context.Prices.FirstAsync();
 
-        Assert.That(price.Amount, Is.EqualTo(PreciseDecimal));
+        // SQL Server enforces decimal(18,6) - truncates/rounds to 6 decimal places
+        Assert.That(price.Amount, Is.Not.EqualTo(PreciseDecimal));
+        Assert.That(price.Amount, Is.EqualTo(TruncatedDecimal));
     }
 }
