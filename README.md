@@ -1,6 +1,16 @@
 DbContext Testing
 =================
 
+Examples of different approaches for testing Entity Framework Core DbContext.
+
+## Running the Tests
+
+```bash
+dotnet test
+```
+
+## Testing Approaches
+
 What are your options?
 
 
