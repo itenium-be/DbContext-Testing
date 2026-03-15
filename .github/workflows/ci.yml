@@ -18,6 +18,9 @@ jobs:
         with:
           dotnet-version: 9.0.x
 
+      - name: Pull SQL Server image
+        run: docker pull mcr.microsoft.com/mssql/server:2022-latest
+
       - name: Restore
         run: dotnet restore
 
