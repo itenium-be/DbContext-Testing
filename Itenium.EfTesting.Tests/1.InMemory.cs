@@ -60,31 +60,17 @@ public class InMemory
     /// Asynchronously does not work with .AsQueryable()
     /// </summary>
     [Test]
-    public async Task MockDbContextAsync()
+    public void MockDbContextAsync()
     {
         var context = Substitute.For<IQueryableStoreDbContext>();
-        var prod100 = new ProductEntity()
-        {
-            Id = 100,
-            WarehouseId = 1,
-            Stock = 5
-        };
-        var prod101 = new ProductEntity()
-        {
-            Id = 101,
-            WarehouseId = 2,
-            Stock = 3
-        };
-        var data = new[] { prod100, prod101 };
+        var data = new[] { new ProductEntity() };
         context.Products.Returns(data.AsQueryable());
         var service = new QueryableProductService(context);
 
-        // FAILS: simple .AsQueryable() is not enough
-        await service.WarehouseBurnedDownAsync(1);
+        var ex = Assert.ThrowsAsync<InvalidOperationException>(
+            async () => await service.WarehouseBurnedDownAsync(1));
 
-        Assert.That(prod100.Stock, Is.EqualTo(0));
-        Assert.That(prod101.Stock, Is.EqualTo(3));
-        await context.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>());
+        Assert.That(ex.Message, Does.Contain("IAsyncEnumerable"));
     }
 
 
