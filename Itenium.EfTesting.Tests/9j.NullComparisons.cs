@@ -76,7 +76,7 @@ public class NullComparisons
     [Test]
     public async Task SqlServerTestContainer_SqlNullSemantics()
     {
-        await using var container = new MsSqlBuilder()
+        await using var container = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-latest")
             .WithPassword("YourStrong@Passw0rd")
             .Build();
         await container.StartAsync();
@@ -122,7 +122,7 @@ public class NullComparisons
     [Test]
     public async Task SqlServerTestContainer_RelationalNulls_ExcludesNull()
     {
-        await using var container = new MsSqlBuilder()
+        await using var container = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-latest")
             .WithPassword("YourStrong@Passw0rd")
             .Build();
         await container.StartAsync();

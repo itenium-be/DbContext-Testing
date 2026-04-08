@@ -81,7 +81,7 @@ public class UniqueConstraints
     [Test]
     public async Task SqlServerTestContainer_ThrowsOnDuplicateUniqueColumn()
     {
-        await using var container = new MsSqlBuilder()
+        await using var container = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-latest")
             .WithPassword("YourStrong@Passw0rd")
             .Build();
         await container.StartAsync();

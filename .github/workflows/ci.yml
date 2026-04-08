@@ -22,10 +22,10 @@ jobs:
         run: docker pull mcr.microsoft.com/mssql/server:2022-latest
 
       - name: Restore
-        run: dotnet restore
+        run: dotnet restore Itenium.EfTesting.slnx
 
       - name: Build
-        run: dotnet build --no-restore
+        run: dotnet build Itenium.EfTesting.slnx --no-restore
 
       - name: Test
-        run: dotnet test --no-build --verbosity normal
+        run: dotnet test Itenium.EfTesting.slnx --no-build --verbosity normal

@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".github/workflows/ci.yml" />
+    <File Path=".gitignore" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="Itenium.EfTesting.Context/Itenium.EfTesting.Context.csproj" />
+  <Project Path="Itenium.EfTesting.Tests/Itenium.EfTesting.Tests.csproj" />
+</Solution>

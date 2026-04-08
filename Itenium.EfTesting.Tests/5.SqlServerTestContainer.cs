@@ -29,7 +29,7 @@ public class SqlServerTestContainer
     [Test]
     public async Task TestService()
     {
-        await using var container = new MsSqlBuilder()
+        await using var container = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-latest")
             .WithPassword("YourStrong@Passw0rd")
             .Build();
 

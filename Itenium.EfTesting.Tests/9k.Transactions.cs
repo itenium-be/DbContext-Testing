@@ -68,7 +68,7 @@ public class Transactions
     [Test]
     public async Task SqlServerTestContainer_TransactionIsolation()
     {
-        await using var container = new MsSqlBuilder()
+        await using var container = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-latest")
             .WithPassword("YourStrong@Passw0rd")
             .Build();
         await container.StartAsync();

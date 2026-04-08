@@ -117,7 +117,7 @@ public class FilteredIncludes
     [Test]
     public async Task SqlServerTestContainer_FilteredIncludeWorks()
     {
-        await using var container = new MsSqlBuilder()
+        await using var container = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-latest")
             .WithPassword("YourStrong@Passw0rd")
             .Build();
         await container.StartAsync();

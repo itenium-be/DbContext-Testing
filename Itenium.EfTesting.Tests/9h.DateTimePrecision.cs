@@ -86,7 +86,7 @@ public class DateTimeKindLoss
     [Test]
     public async Task SqlServerTestContainer_LosesDateTimeKind()
     {
-        await using var container = new MsSqlBuilder()
+        await using var container = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-latest")
             .WithPassword("YourStrong@Passw0rd")
             .Build();
         await container.StartAsync();
@@ -205,7 +205,7 @@ public class DateTimeLocalTimezonePitfall
     [Test]
     public async Task SqlServerTestContainer_KindLost_WrongConversion()
     {
-        await using var container = new MsSqlBuilder()
+        await using var container = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-latest")
             .WithPassword("YourStrong@Passw0rd")
             .Build();
         await container.StartAsync();
@@ -282,7 +282,7 @@ public class DateTimePrecisionLoss
     [Test]
     public async Task SqlServerTestContainer_LegacyDateTimeRoundsMilliseconds()
     {
-        await using var container = new MsSqlBuilder()
+        await using var container = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-latest")
             .WithPassword("YourStrong@Passw0rd")
             .Build();
         await container.StartAsync();
